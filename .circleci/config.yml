@@ -7,7 +7,6 @@ jobs:
   one:
     docker:
       - image: circleci/node:7.10
-    # working_directory: ~/jenkins-test
 
     steps:
       - checkout
@@ -40,5 +39,5 @@ workflows:
     jobs:
       - one
       - two:
-          require:
+          requires:
             - one

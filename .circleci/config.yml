@@ -26,7 +26,7 @@ jobs:
     steps:
       - run: echo "a more familiar hello"
   
-workflow:
+workflows:
   version: 2
   one_and_two:
     jobs:

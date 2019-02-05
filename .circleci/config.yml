@@ -15,7 +15,7 @@ jobs:
       - run: echo "Trying out workspace" > my_workspace/echo-output
       - persist_to_workspace:
           root: my_workspace
-          path:
+          paths:
             - echo-output
   
   two:

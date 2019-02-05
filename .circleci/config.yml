@@ -6,29 +6,39 @@ version: 2
 jobs:
   one:
     docker:
-      # specify the version you desire here
       - image: circleci/node:7.10
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/jenkins-test
+    # working_directory: ~/jenkins-test
 
     steps:
       - checkout
       - run: echo "A first Hello"
+      - run: mkdir -p my_workspace
+      - run: echo "Trying out worksaces" > my_workspace/echo-output
+      - persist_to_workspace:
+          root: my_workspace
+          path:
+            - echo-output
   
   two:
     docker:
       - image: circleci/node:7.10
     steps:
+      - checkout
       - run: echo "a more familiar hello"
+      - attach_workspace:
+          at: my_workspace
+      - run: |
+          if[[ $(cat my_workspace/echo-output) == "Trying out workspace" ]]; then
+            echo "It worked!";
+          else
+            echo "Nope!"; exit 1
+          fi
   
 workflows:
   version: 2
   one_and_two:
     jobs:
       - one
-      - two
+      - two:
+          require:
+            - one
